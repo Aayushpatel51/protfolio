@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Aayush Patel — Portfolio Quest</title>
+<meta name="description" content="A 3D Pac-Man style portfolio game. Eat the glowing orbs to unlock each section.">
+<style>
+  :root{
+    --bg:#05060f; --ink:#e8ecff; --dim:#8b93c4; --yellow:#ffd400; --cyan:#27e8ff; --pink:#ff4fd8; --panel:rgba(10,12,32,.92);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;overflow:hidden;touch-action:none;user-select:none}
+  canvas#stage{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .mono{font-family:"Courier New",ui-monospace,monospace;letter-spacing:.08em}
+
+  #hud{position:fixed;top:0;left:0;right:0;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px;pointer-events:none;flex-wrap:wrap}
+  #hud>*{pointer-events:auto}
+  .stat{font-size:14px;color:var(--dim)} .stat b{color:var(--yellow);font-size:18px}
+  #chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid #333a7a;color:#5a6296;background:rgba(10,12,32,.6);transition:.3s}
+  .chip.on{color:#05060f;border-color:transparent;font-weight:700;box-shadow:0 0 14px currentColor}
+  #btns{display:flex;gap:6px}
+  button{font:inherit;cursor:pointer}
+  .btn{background:var(--panel);color:var(--ink);border:1px solid #333a7a;border-radius:8px;padding:6px 12px;font-size:12px}
+  .btn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .btn.primary{background:var(--yellow);color:#111;border-color:var(--yellow);font-weight:700;font-size:16px;padding:12px 28px;box-shadow:0 0 24px rgba(255,212,0,.5)}
+  .btn.primary:hover{color:#111;transform:scale(1.04)}
+
+  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 50% 40%,rgba(5,6,15,.55),rgba(5,6,15,.9))}
+  .overlay.show{display:flex}
+  .card{width:min(680px,100%);max-height:88vh;overflow:auto;background:var(--panel);border:2px solid var(--accent,var(--cyan));border-radius:16px;padding:26px 28px;box-shadow:0 0 40px color-mix(in srgb,var(--accent,var(--cyan)) 45%,transparent);user-select:text;touch-action:pan-y}
+  .card h1{margin:0 0 4px;font-size:clamp(28px,6vw,46px);color:var(--yellow);text-shadow:0 0 18px rgba(255,212,0,.6)}
+  .card h2{margin:0 0 10px;color:var(--accent,var(--cyan))}
+  .card p,.card li{line-height:1.6;color:#cfd5ff}
+  .card a{color:var(--cyan)}
+  .tag{display:inline-block;margin:3px 4px 3px 0;padding:3px 10px;border-radius:99px;background:#161a45;border:1px solid #333a7a;font-size:13px}
+  .proj{border-left:3px solid var(--accent,var(--cyan));padding:2px 0 2px 12px;margin:12px 0}
+  .proj b{color:#fff}
+  .sub{color:var(--dim);margin:0 0 18px}
+  .keys{display:flex;gap:18px;flex-wrap:wrap;margin:16px 0;color:var(--dim);font-size:14px}
+  kbd{background:#161a45;border:1px solid #333a7a;border-radius:5px;padding:1px 7px;color:var(--ink)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+  #dpad{position:fixed;right:14px;bottom:14px;display:none;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(3,56px);gap:6px}
+  #dpad button{background:rgba(10,12,32,.75);border:1px solid #333a7a;color:var(--ink);border-radius:12px;font-size:22px}
+  #dpad .u{grid-area:1/2}#dpad .l{grid-area:2/1}#dpad .r{grid-area:2/3}#dpad .d{grid-area:3/2}
+  @media (pointer:coarse){#dpad{display:grid}}
+  #toast{position:fixed;left:50%;bottom:8%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--yellow);padding:8px 18px;border-radius:99px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+  #toast.show{opacity:1}
+  #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:9;color:var(--yellow)}
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<div id="hud">
+  <div class="stat mono">SCORE <b id="score">0</b></div>
+  <div class="stat mono">LIVES <b id="lives">3</b></div>
+  <div id="chips"></div>
+  <div id="btns">
+    <button class="btn" id="btnCam" title="Camera (C)">📷 Camera</button>
+    <button class="btn" id="btnMute" title="Sound (M)">🔊</button>
+    <button class="btn" id="btnPlain" title="Skip the game">📄 Plain view</button>
+  </div>
+</div>
+
+<div id="dpad"><button class="u" data-d="up">▲</button><button class="l" data-d="left">◀</button><button class="r" data-d="right">▶</button><button class="d" data-d="down">▼</button></div>
+<div id="toast"></div>
+<div id="loading" class="mono">LOADING…</div>
+
+<div id="start" class="overlay show">
+  <div class="card" style="--accent:var(--yellow)">
+    <h1 id="heroName">AAYUSH PATEL</h1>
+    <p class="sub mono" id="heroRole"></p>
+    <p>Welcome to my portfolio — as a game. Guide the yellow chomper around the neon maze, eat the dots, and
+       grab the five <b>glowing section orbs</b> to unlock each part of my story. Watch out for the bugs 👾 —
+       an orb makes them vulnerable for a few seconds.</p>
+    <div class="keys"><span><kbd>←↑↓→</kbd> / <kbd>WASD</kbd> move</span><span><kbd>C</kbd> camera</span><span><kbd>M</kbd> mute</span><span><kbd>P</kbd> pause</span><span>Touch: swipe / d-pad</span></div>
+    <div class="row"><button class="btn primary" id="btnStart">▶ PRESS START</button><button class="btn" id="btnPlain2">Skip → plain view</button></div>
+  </div>
+</div>
+
+<div id="panel" class="overlay"><div class="card" id="panelCard"></div></div>
+<div id="plain" class="overlay"><div class="card" id="plainCard" style="--accent:var(--pink)"></div></div>
+<div id="end" class="overlay"><div class="card" id="endCard" style="--accent:var(--yellow)"></div></div>
+
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}
+</script>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
