@@ -145,7 +145,9 @@ $$('[data-hover]').forEach(el => {
 
 /* ───────── memory: the site remembers you ───────── */
 const visits = store.get('ap:visits', { n: 0, first: Date.now() });
-if (!sessionStorage.getItem('ap:seen')) {
+let seen = false;
+try { seen = !!sessionStorage.getItem('ap:seen'); } catch { /* ignore */ }
+if (!seen) {
   visits.n++; store.set('ap:visits', visits);
   try { sessionStorage.setItem('ap:seen', '1'); } catch { /* ignore */ }
 }
