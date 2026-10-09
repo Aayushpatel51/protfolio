@@ -37,7 +37,9 @@ $('#disc').innerHTML = SERVICES.map((d, i) => `
   <li style="--d:${0.1 + i * 0.07}s" data-hover="${i}"><span class="n">0${i + 1}</span><b>${esc(d.name)}</b>
     <p>${esc(d.line)}</p><ul>${d.items.map(t => `<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');
 
-$('#brandName').textContent = SITE.studio;
+$('#brandName').textContent = $('#fBrand').textContent = SITE.studio;
+$('#fCompany').textContent = SITE.company;
+document.title = `${SITE.studio} — Design Studio`;
 $('#descriptor').textContent = SITE.descriptor;
 $('#fLoc').textContent = $('#fLoc2').textContent = SITE.location;
 $('#fStudio').textContent = SITE.descriptor;

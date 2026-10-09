@@ -1,7 +1,8 @@
 // ✏️ EDIT THIS FILE to make the studio yours. Placeholder copy is marked TODO.
 
 export const SITE = {
-  studio: 'Aayush Patel',            // wordmark in the header
+  studio: 'NirmaanLab',              // wordmark in the header
+  company: 'Vidurtech Solutions Pvt. Ltd.', // legal entity, shown in the footer
   descriptor: 'Independent design & 3D studio',
   email: 'patelaayush965@gmail.com',
   github: 'https://github.com/aayushpatel51',
