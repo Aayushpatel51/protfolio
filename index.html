@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Aayush Patel — A world, not a website</title>
-<meta name="description" content="Aayush Patel — design, 3D, motion, creative code and engineering. Walk through the story: idea, story, world, interaction, memory.">
-<meta name="theme-color" content="#08070c">
+<title>Aayush Patel — Design Studio</title>
+<meta name="description" content="Aayush Patel is an independent design studio: brand identity, interface design, 3D, motion, creative code and engineering.">
+<meta name="theme-color" content="#0b0a0f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="is-loading">
@@ -18,86 +18,95 @@
 <div id="cursor" aria-hidden="true"><i></i></div>
 
 <header class="top">
-  <a class="brand" href="#idea" data-go="0" aria-label="Aayush Patel — back to start">
-    <span class="brand-dot"></span><span>Aayush Patel</span>
+  <a class="brand" href="#top" data-go="0" aria-label="Aayush Patel — back to top">
+    <span id="brandName">Aayush Patel</span><sup>®</sup>
   </a>
-  <a class="pill magnetic" href="#memory" data-go="4"><span>Say hello</span><i>→</i></a>
+  <nav class="menu" aria-label="Sections">
+    <a href="#studio" data-go="1">Studio</a>
+    <a href="#work" data-go="2">Work</a>
+    <a href="#services" data-go="3">Services</a>
+    <a href="#contact" data-go="4">Contact</a>
+  </nav>
+  <a class="pill magnetic" href="#contact" data-go="4"><span class="live-dot"></span><span>Let's talk</span></a>
 </header>
 
-<nav class="rail" aria-label="Chapters">
-  <button data-go="0"><span>Idea</span></button>
-  <button data-go="1"><span>Story</span></button>
-  <button data-go="2"><span>World</span></button>
-  <button data-go="3"><span>Interaction</span></button>
-  <button data-go="4"><span>Memory</span></button>
-</nav>
-<div class="counter mono" aria-hidden="true"><b id="chNum">01</b> / 05 <em id="chName">Idea</em></div>
+<div class="counter mono" aria-hidden="true"><b id="chNum">01</b> / 05 <em id="chName">Intro</em></div>
 
-<main id="story">
+<main id="top">
 
-  <!-- 01 · IDEA -->
-  <section class="chapter c-idea" id="idea" data-idx="0">
-    <div class="col">
-      <p class="kicker rv mono">01 — Idea</p>
-      <h1 class="display" data-split>Every memorable thing begins as a&nbsp;<em>spark.</em></h1>
-      <p class="lede rv">I'm <b>Aayush Patel</b>. I turn ideas into interactive worlds — where design, 3D, motion, creative code and engineering are one craft.</p>
-      <div class="row rv">
-        <a class="btn magnetic" href="#story-start" data-go="1"><span>Enter the story</span><i>↓</i></a>
-        <span class="hint mono"><span class="hint-dot"></span>move your cursor — disturb the spark</span>
-      </div>
+  <!-- 01 · INTRO -->
+  <section class="chapter c-hero" id="intro" data-idx="0">
+    <div class="hero-main">
+      <p class="kicker rv mono" id="descriptor">Independent design &amp; 3D studio</p>
+      <h1 class="mega" data-split>Brand. Interface. <em>Interaction.</em></h1>
     </div>
-    <div class="scrollcue mono" aria-hidden="true"><span></span>scroll</div>
+    <div class="hero-meta rv">
+      <p class="lede">We turn ideas into identities, interfaces and interactive worlds — from the first spark to something people still remember.</p>
+      <dl class="facts mono">
+        <div><dt>Based in</dt><dd id="fLoc">—</dd></div>
+        <div><dt>Local time</dt><dd id="fTime">—</dd></div>
+        <div><dt>Status</dt><dd id="fAvail"><span class="live-dot"></span><span id="fAvailT">Available</span></dd></div>
+      </dl>
+    </div>
+    <div class="ticker" aria-hidden="true"><div class="ticker-in" id="ticker"></div></div>
   </section>
 
-  <!-- 02 · STORY -->
-  <section class="chapter c-story right" id="story-start" data-idx="1">
-    <div class="col">
-      <p class="kicker rv mono">02 — Story</p>
-      <h2 class="display" data-split>A site is a sequence. A story is a&nbsp;<em>feeling.</em></h2>
-      <p class="lede rv">Most portfolios list what someone has done. I'd rather you walk through how I think: start with a clear idea, shape it into a story, build a world around it, let people touch it — and leave them with something they remember.</p>
-      <ol class="flow rv" aria-label="How I work">
-        <li><b>Brand</b><span>who you are</span></li>
-        <li><b>Interface</b><span>made beautiful</span></li>
-        <li><b>Interaction</b><span>made alive</span></li>
-        <li><b>Conversion</b><span>made inevitable</span></li>
+  <!-- 02 · STUDIO -->
+  <section class="chapter c-studio" id="studio" data-idx="1">
+    <div class="wrap">
+      <p class="kicker rv mono"><span>(01)</span> Studio</p>
+      <h2 class="statement" data-split>We believe a site is a sequence, and the best ones leave a <em>feeling.</em> So we design the whole journey: who you are, how it looks, how it moves and why people act.</h2>
+      <ol class="process" aria-label="How we work">
+        <li class="rv"><span class="mono">01</span><b>Brand</b><p>Find the idea and the voice. Decide who you are before deciding how you look.</p></li>
+        <li class="rv"><span class="mono">02</span><b>Interface</b><p>Make it beautiful and obvious. Type, layout, colour and system.</p></li>
+        <li class="rv"><span class="mono">03</span><b>Interaction</b><p>Make it alive. Motion, 3D and small details people want to touch.</p></li>
+        <li class="rv"><span class="mono">04</span><b>Conversion</b><p>Make acting on it inevitable. Clear paths, fast pages, measurable results.</p></li>
       </ol>
-      <p class="note rv">TODO — replace this with your own story: where you started, what you obsess over, what you're looking for next.</p>
+      <p class="note rv mono">TODO — replace the statement above and these four steps with your own philosophy and process.</p>
     </div>
   </section>
 
-  <!-- 03 · WORLD -->
-  <section class="chapter c-world right" id="world" data-idx="2">
-    <div class="col wide">
-      <p class="kicker rv mono">03 — World</p>
-      <h2 class="display" data-split>Selected work, as&nbsp;<em>places</em>&nbsp;to&nbsp;visit.</h2>
-      <ul class="projects" id="projects"></ul>
-    </div>
-  </section>
-
-  <!-- 04 · INTERACTION -->
-  <section class="chapter c-interaction" id="interaction" data-idx="3">
-    <div class="col">
-      <p class="kicker rv mono">04 — Interaction</p>
-      <h2 class="display" data-split>Go on. <em>Touch</em> it.</h2>
-      <p class="lede rv">Click anywhere to send a shockwave. Hover a discipline to see how it feels. Design + 3D + motion + creative code + engineering, in one hand.</p>
-      <ul class="disc" id="disc"></ul>
-    </div>
-  </section>
-
-  <!-- 05 · MEMORY -->
-  <section class="chapter c-memory" id="memory" data-idx="4">
-    <div class="col center">
-      <p class="kicker rv mono">05 — Memory</p>
-      <p class="you rv mono" id="you"></p>
-      <h2 class="display big" data-split>Let's build something people <em>remember.</em></h2>
-      <div class="row rv center">
-        <a class="btn lg magnetic" id="mailBtn" href="mailto:"><span>Start a conversation</span><i>→</i></a>
+  <!-- 03 · WORK -->
+  <section class="chapter c-work" id="work" data-idx="2">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker rv mono"><span>(02)</span> Selected work</p>
+        <h2 class="display" data-split>Work we're <em>proud</em> of.</h2>
       </div>
-      <p class="links rv mono" id="links"></p>
-      <p class="star-hint rv mono"><span class="hint-dot"></span>click the sky to leave a star — it stays</p>
-      <button class="ghost mono" id="clearStars" hidden>forget my stars</button>
+      <ul class="cases" id="projects"></ul>
     </div>
-    <footer class="foot mono"><span>© <span id="yr"></span> Aayush Patel</span><span>Built by hand — three.js, GLSL, no templates.</span></footer>
+  </section>
+
+  <!-- 04 · SERVICES -->
+  <section class="chapter c-services" id="services" data-idx="3">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker rv mono"><span>(03)</span> Services</p>
+        <h2 class="display" data-split>Design + 3D + motion + code + <em>engineering.</em></h2>
+      </div>
+      <ul class="svc" id="disc"></ul>
+      <p class="hint mono rv"><span class="hint-dot"></span>click anywhere for a shockwave</p>
+    </div>
+  </section>
+
+  <!-- 05 · CONTACT -->
+  <section class="chapter c-contact" id="contact" data-idx="4">
+    <div class="wrap">
+      <p class="kicker rv mono"><span>(04)</span> Contact</p>
+      <p class="you rv mono" id="you"></p>
+      <h2 class="mega small" data-split>Let's make something people <em>remember.</em></h2>
+      <a class="bigmail magnetic rv" id="mailBig" href="mailto:"><span id="mailText"></span><i>↗</i></a>
+      <div class="row rv">
+        <a class="btn lg magnetic" id="mailBtn" href="mailto:"><span>Start a project</span><i>→</i></a>
+        <span class="star-hint mono"><span class="hint-dot"></span>click the sky to leave a star — it stays <button class="ghost mono" id="clearStars" hidden>forget my stars</button></span>
+      </div>
+    </div>
+    <footer class="foot mono">
+      <div><b>Studio</b><span id="fStudio"></span><span id="fLoc2"></span></div>
+      <div><b>Elsewhere</b><span id="links"></span></div>
+      <div><b>Local time</b><span id="fTime2">—</span></div>
+      <div class="end"><span>© <span id="yr"></span> Aayush Patel®</span><span>Built by hand — three.js, GLSL.</span></div>
+    </footer>
   </section>
 
 </main>
