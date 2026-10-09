@@ -1,11 +1,11 @@
-import { SITE, PROJECTS, DISCIPLINES } from './content.js';
+import { SITE, PROJECTS, COMING_SOON, SERVICES } from './content.js';
 import { createWorld } from './world.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
-const NAMES = ['Idea', 'Story', 'World', 'Interaction', 'Memory'];
+const NAMES = ['Intro', 'Studio', 'Work', 'Services', 'Contact'];
 const store = {
   get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } },
@@ -13,21 +13,57 @@ const store = {
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ───────── render content ───────── */
-$('#projects').innerHTML = PROJECTS.map((p, i) => `
-  <li style="--d:${0.25 + i * 0.1}s"><a href="${esc(p.href)}" data-hover="${i}">
-    <span class="p-n">0${i + 1}</span><span class="p-t">${esc(p.title)}</span><span class="p-y">${esc(p.year)}</span>
-    <span class="p-d">${esc(p.line)}</span>
-    <span class="p-tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join('')}</span>
+if (PROJECTS.length) {
+  $('#projects').innerHTML = PROJECTS.map((p, i) => `
+  <li style="--d:${0.1 + i * 0.08}s"><a class="case" href="${esc(p.href)}" data-hover="${i}">
+    <div class="tile" style="--h:${+p.hue || 20}"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+      <span class="no">0${i + 1}</span><span class="view">View project ↗</span></div>
+    <div class="cap"><h3>${esc(p.title)}</h3><span class="y">${esc(p.year)}</span>
+      <span class="k">${esc(p.kind)}</span><p>${esc(p.line)}</p></div>
   </a></li>`).join('');
-$('#disc').innerHTML = DISCIPLINES.map((d, i) => `
-  <li style="--d:${0.3 + i * 0.09}s" data-hover="${i}"><b>${esc(d.name)}</b><span>${esc(d.line)}</span></li>`).join('');
-$('#mailBtn').href = `mailto:${SITE.email}`;
+} else {
+  $('#workTitle').innerHTML = COMING_SOON.heading;
+  $('#workIntro').textContent = COMING_SOON.intro; $('#workIntro').hidden = false;
+  $('#projects').classList.add('soon');
+  $('#projects').innerHTML = COMING_SOON.tiles.map((p, i) => `
+  <li style="--d:${0.1 + i * 0.08}s"><a class="case" href="#contact" data-go="4" data-hover="${i}">
+    <div class="tile" style="--h:${+p.hue || 20}"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+      <span class="no">0${i + 1}</span><span class="soon-tag mono">${i === 1 ? 'Open slot' : 'In progress'}</span>
+      <span class="view">${i === 1 ? 'Start it ↗' : 'Say hello ↗'}</span></div>
+    <div class="cap"><h3>${esc(p.title)}</h3><span class="k">${esc(p.kind)}</span></div>
+  </a></li>`).join('');
+}
+$('#disc').innerHTML = SERVICES.map((d, i) => `
+  <li style="--d:${0.1 + i * 0.07}s" data-hover="${i}"><span class="n">0${i + 1}</span><b>${esc(d.name)}</b>
+    <p>${esc(d.line)}</p><ul>${d.items.map(t => `<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');
+
+$('#brandName').textContent = $('#fBrand').textContent = SITE.studio;
+$('#fCompany').textContent = SITE.company;
+document.title = `${SITE.studio} — Design Studio`;
+$('#descriptor').textContent = SITE.descriptor;
+$('#fLoc').textContent = $('#fLoc2').textContent = SITE.location;
+$('#fStudio').textContent = SITE.descriptor;
+if (SITE.availability) $('#fAvailT').textContent = SITE.availability; else $('#fAvail').parentElement.hidden = true;
+$('#mailText').textContent = SITE.email;
+$('#mailBig').href = $('#mailBtn').href = `mailto:${SITE.email}`;
 $('#links').innerHTML = [
-  `<a href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a>`,
+  `<a href="mailto:${esc(SITE.email)}">Email</a>`,
   SITE.github && `<a href="${esc(SITE.github)}" target="_blank" rel="noopener">GitHub ↗</a>`,
   SITE.linkedin && `<a href="${esc(SITE.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>`,
+  SITE.instagram && `<a href="${esc(SITE.instagram)}" target="_blank" rel="noopener">Instagram ↗</a>`,
 ].filter(Boolean).join('');
 $('#yr').textContent = new Date().getFullYear();
+
+const WORDS = ['Brand identity', 'Interface design', '3D & WebGL', 'Motion', 'Creative code', 'Engineering'];
+const run = WORDS.map(w => `<span>${w}</span>`).join('');
+$('#ticker').innerHTML = run + run + run + run;
+
+function tick() {
+  let t = '—';
+  try { t = new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit', timeZone: SITE.timezone, timeZoneName: 'short' }).format(new Date()); } catch { /* bad tz */ }
+  $('#fTime').textContent = $('#fTime2').textContent = t;
+}
+tick(); setInterval(tick, 20000);
 
 // split display headings into words for the mask-reveal
 $$('[data-split]').forEach(h => {
@@ -52,7 +88,7 @@ $$('[data-split]').forEach(h => {
   h.replaceChildren(...wrap.childNodes);
   h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
 });
-$$('.col').forEach(c => $$('.rv', c).forEach((el, i) => el.style.setProperty('--d', `${0.35 + i * 0.12}s`)));
+$$('.chapter').forEach(c => $$('.rv', c).forEach((el, i) => el.style.setProperty('--d', `${0.3 + i * 0.1}s`)));
 
 /* ───────── 3D world ───────── */
 let world = null;
@@ -86,7 +122,7 @@ function onScroll() {
   const idx = Math.round(p);
   if (idx !== active) {
     active = idx;
-    $$('.rail button').forEach((b, i) => b.classList.toggle('on', i === idx));
+    $$('.menu a').forEach(a => a.classList.toggle('on', +a.dataset.go === idx));
     $('#chNum').textContent = '0' + (idx + 1);
     $('#chName').textContent = NAMES[idx];
   }
@@ -104,7 +140,7 @@ $$('[data-go]').forEach(el => el.addEventListener('click', e => {
 }));
 
 /* ───────── reveal on view ───────── */
-const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('in', e.isIntersecting)), { threshold: 0.18 });
+const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('in', e.isIntersecting)), { threshold: 0, rootMargin: '-8% 0px -8% 0px' });
 chapters.forEach(c => io.observe(c));
 
 /* ───────── pointer, cursor, shockwaves ───────── */
@@ -122,7 +158,7 @@ addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') world?.setPo
   cursor.style.transform = `translate(${cx}px,${cy}px)`;
   requestAnimationFrame(loop);
 })();
-$$('a,button,.disc li').forEach(el => {
+$$('a,button,.svc>li').forEach(el => {
   el.addEventListener('pointerenter', () => cursor.classList.add('big'));
   el.addEventListener('pointerleave', () => cursor.classList.remove('big'));
 });
@@ -145,7 +181,9 @@ $$('[data-hover]').forEach(el => {
 
 /* ───────── memory: the site remembers you ───────── */
 const visits = store.get('ap:visits', { n: 0, first: Date.now() });
-if (!sessionStorage.getItem('ap:seen')) {
+let seen = false;
+try { seen = !!sessionStorage.getItem('ap:seen'); } catch { /* ignore */ }
+if (!seen) {
   visits.n++; store.set('ap:visits', visits);
   try { sessionStorage.setItem('ap:seen', '1'); } catch { /* ignore */ }
 }
@@ -163,7 +201,7 @@ if (world) myStars.forEach(s => world.addStar(s.x, s.y, false));
 syncClear();
 
 addEventListener('pointerdown', e => {
-  if (e.target.closest('a,button,input,.rail,.disc,.projects')) return;
+  if (e.target.closest('a,button,input,.top,.cases,.svc,.foot')) return;
   const nx = (e.clientX / innerWidth) * 2 - 1, ny = -(e.clientY / innerHeight) * 2 + 1;
   world?.shock(nx, ny);
   world?.pulse(0.6);

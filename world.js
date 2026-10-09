@@ -24,7 +24,7 @@ const POSES = [
   { x: 0,    y: 0.2,  s: 0.95, rx: -1.15, ry: 0,   rz: 0,    spin: 0.05 },
 ];
 
-const DIM = [0.9, 0.85, 0.5, 0.85, 0.7];
+const DIM = [0.95, 0.6, 0.4, 0.5, 0.8];
 const rnd = Math.random;
 const gauss = () => (rnd() + rnd() + rnd() + rnd() - 2) * 0.9;
 
