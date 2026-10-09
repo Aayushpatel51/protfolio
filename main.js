@@ -1,4 +1,4 @@
-import { SITE, PROJECTS, SERVICES } from './content.js';
+import { SITE, PROJECTS, COMING_SOON, SERVICES } from './content.js';
 import { createWorld } from './world.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -13,13 +13,26 @@ const store = {
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ───────── render content ───────── */
-$('#projects').innerHTML = PROJECTS.map((p, i) => `
+if (PROJECTS.length) {
+  $('#projects').innerHTML = PROJECTS.map((p, i) => `
   <li style="--d:${0.1 + i * 0.08}s"><a class="case" href="${esc(p.href)}" data-hover="${i}">
     <div class="tile" style="--h:${+p.hue || 20}"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
       <span class="no">0${i + 1}</span><span class="view">View project ↗</span></div>
     <div class="cap"><h3>${esc(p.title)}</h3><span class="y">${esc(p.year)}</span>
       <span class="k">${esc(p.kind)}</span><p>${esc(p.line)}</p></div>
   </a></li>`).join('');
+} else {
+  $('#workTitle').innerHTML = COMING_SOON.heading;
+  $('#workIntro').textContent = COMING_SOON.intro; $('#workIntro').hidden = false;
+  $('#projects').classList.add('soon');
+  $('#projects').innerHTML = COMING_SOON.tiles.map((p, i) => `
+  <li style="--d:${0.1 + i * 0.08}s"><a class="case" href="#contact" data-go="4" data-hover="${i}">
+    <div class="tile" style="--h:${+p.hue || 20}"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+      <span class="no">0${i + 1}</span><span class="soon-tag mono">${i === 1 ? 'Open slot' : 'In progress'}</span>
+      <span class="view">${i === 1 ? 'Start it ↗' : 'Say hello ↗'}</span></div>
+    <div class="cap"><h3>${esc(p.title)}</h3><span class="k">${esc(p.kind)}</span></div>
+  </a></li>`).join('');
+}
 $('#disc').innerHTML = SERVICES.map((d, i) => `
   <li style="--d:${0.1 + i * 0.07}s" data-hover="${i}"><span class="n">0${i + 1}</span><b>${esc(d.name)}</b>
     <p>${esc(d.line)}</p><ul>${d.items.map(t => `<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');

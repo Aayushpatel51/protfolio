@@ -12,13 +12,22 @@ export const SITE = {
   availability: 'Booking projects for Q1 2027', // TODO: or '' to hide
 };
 
-// Selected work. `hue` tints each project's tile (0–360).
+// Selected work. Leave PROJECTS empty ([]) until you have case studies: the site then shows a
+// "coming soon" section instead. When you add one, set `href` to its page and `hue` (0–360) to tint its tile.
 export const PROJECTS = [
-  { title: 'Project One',   kind: 'Brand · 3D · Web',          year: '2026', hue: 18,  line: 'TODO: one sentence on the idea, the experience and the result.', href: '#' },
-  { title: 'Project Two',   kind: 'Product · Interface',       year: '2025', hue: 172, line: 'TODO: what problem it solved and the impact it had.',            href: '#' },
-  { title: 'Project Three', kind: 'Motion · Creative code',    year: '2025', hue: 268, line: 'TODO: something you are proud of — a brand, a product, a toy.',  href: '#' },
-  { title: 'Project Four',  kind: 'WebGL · Installation',      year: '2024', hue: 340, line: 'TODO: an experiment that taught you something.',                 href: '#' },
+  // { title: 'Project name', kind: 'Brand · 3D · Web', year: '2027', hue: 18, line: 'One sentence on the idea and the result.', href: 'https://…' },
 ];
+
+// Shown while PROJECTS is empty. Edit freely.
+export const COMING_SOON = {
+  heading: 'First projects, <em>coming soon.</em>',
+  intro: 'The studio is new and the first case studies are being built right now. Want yours to be one of them?',
+  tiles: [
+    { title: 'In the studio',  kind: 'Case study · in progress', hue: 18 },
+    { title: 'Your project?',  kind: 'Brand · Interface · 3D',   hue: 172 },
+    { title: 'Coming soon',    kind: 'Motion · Creative code',   hue: 268 },
+  ],
+};
 
 // Services index. Hover a row and the world reacts.
 export const SERVICES = [
